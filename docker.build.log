@@ -1,0 +1,42 @@
+Step 1/14 : FROM ruby:2.6.5
+ ---> d98e4013532b
+Step 2/14 : ENV LANG C.UTF-8
+ ---> Using cache
+ ---> 980c42129160
+Step 3/14 : RUN apt-get update -qq && apt-get install -y     build-essential     nodejs  && rm -rf /var/lib/apt/lists/*
+ ---> Using cache
+ ---> 8192400cfe69
+Step 4/14 : RUN gem install bundler
+ ---> Using cache
+ ---> b73e1418ad81
+Step 5/14 : WORKDIR /tmp
+ ---> Using cache
+ ---> 1bea9fc5d3f5
+Step 6/14 : ADD Gemfile Gemfile
+ ---> Using cache
+ ---> b58d9e03db69
+Step 7/14 : ADD Gemfile.lock Gemfile.lock
+ ---> Using cache
+ ---> 7bfaa088c176
+Step 8/14 : RUN bundle update
+ ---> Using cache
+ ---> 29229b1169c5
+Step 9/14 : RUN bundle config --local build.mysql2 "--with-ldflags=-L/usr/local/opt/openssl/lib --with-cppflags=-I/usr/local/opt/openssl/include"
+ ---> Using cache
+ ---> ef26a0bff196
+Step 10/14 : RUN bundle install
+ ---> Using cache
+ ---> d8af6434d5da
+Step 11/14 : ENV APP_HOME /myapp
+ ---> Using cache
+ ---> 9d516ca60e96
+Step 12/14 : RUN mkdir -p $APP_HOME
+ ---> Using cache
+ ---> 1b6d5dbdac11
+Step 13/14 : WORKDIR $APP_HOME
+ ---> Using cache
+ ---> b37dfb399f88
+Step 14/14 : ADD . $APP_HOME
+ ---> 166f61242125
+Successfully built 166f61242125
+Successfully tagged docker-rails-mysql_web:latest
