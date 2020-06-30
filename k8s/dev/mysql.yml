@@ -1,0 +1,67 @@
+# コンテナ
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-mybotapp-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-mybotapp-dev
+  template:
+    metadata:
+      labels:
+        app: mysql-mybotapp-dev
+    spec:
+      containers:
+        - name: mysql-dev-container
+          # https://hub.docker.com/_/postgres/?tab=tags
+          # 事前にdocker pull postgres:9.6.16しておく
+          image: postgres:9.6.16
+          volumeMounts:
+            - mountPath: /var/lib/mysql/data
+              name: mysql-volume
+          #command: ["/bin/sh","-c"]
+          #args: ["bundle exec pumactl start"]
+          env:
+            - name: TZ
+              value: Asia/Tokyo
+      volumes:
+        - name: mysql-volume
+          persistentVolumeClaim:
+            claimName: pv-slow-claim
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-pv
+  labels:
+    type: nfs
+    environment: development
+spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: slow
+  hostPath:
+    # 作業者の環境によって変更
+    path: "$PWD/postgresql/data"
+    type: DirectoryOrCreate
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pv-slow-claim
+spec:
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: slow
