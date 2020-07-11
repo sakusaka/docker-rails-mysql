@@ -18,7 +18,40 @@ spec:
         run: mybotapp
     spec:
       containers:
+        - image: rails
+          name: mybotapp-rails
+          resources: {}
+          volumeMounts:
+            - mountPath: /app/tmp/sockets
+              name: web-sock
+            - mountPath: /app
+              name: src
+          command: ["/bin/sh","-c"]
+          args: ["bundle exec pumactl start"]
+          env:
+            - name: TZ
+              value: Asia/Tokyo
+      containers:
       - image: nginx
-        name: mybotapp
+        name: mybotapp-nginx
         resources: {}
+        ports:
+          - name: http-server
+            containerPort: 80
+          - name: https-server
+            containerPort: 443
+        volumeMounts:
+          - mountPath: /app/tmp/sockets
+            name: web-sock
+
+        volumes:
+          - name: web-assets
+            emptyDir: {}
+          - name: web-sock
+            emptyDir: {}
+          - name: src
+            hostPath:
+              # 作業者にあわせてパスを変更
+              path: "$PWD/app"
+              type: DirectoryOrCreate
 status: {}

@@ -1,28 +1,40 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+spec:
+  ports:
+  - port: 3306
+  selector:
+    app: mysql
+  clusterIP: None
+---
 # コンテナ
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mysql-mybotapp-dev
+  name: mybotapp-mysql-dev
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mysql-mybotapp-dev
+      app: mybotapp-mysql-dev
   template:
     metadata:
       labels:
-        app: mysql-mybotapp-dev
+        app: mybotapp-mysql-dev
     spec:
       containers:
-        - name: mysql-dev-container
+        - name: mybotapp-mysql-dev-container
           # https://hub.docker.com/_/postgres/?tab=tags
-          # 事前にdocker pull postgres:9.6.16しておく
-          image: postgres:9.6.16
+          # 事前にdocker pull mariadbしておく
+          image: mariadb:latest
           volumeMounts:
-            - mountPath: /var/lib/mysql/data
+            - mountPath: /var/lib/mysql
               name: mysql-volume
-          #command: ["/bin/sh","-c"]
-          #args: ["bundle exec pumactl start"]
+          ports:
+            - containerPort: 3306
+              name: mysql
           env:
             - name: TZ
               value: Asia/Tokyo
@@ -49,7 +61,7 @@ spec:
   storageClassName: slow
   hostPath:
     # 作業者の環境によって変更
-    path: "$PWD/postgresql/data"
+    path: "/Users/takehikoogasawara/Documents/workspace/docker-rails-mysql/mysql/data"
     type: DirectoryOrCreate
 
 ---
