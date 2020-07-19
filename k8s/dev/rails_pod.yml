@@ -52,7 +52,7 @@
           - name: nginx-maintenance-volume
             hostPath:
               # 作業者にあわせてパスを変更
-              path: /Users/takehikoogasawara/Documents/workspace/docker-rails-mysql/app/sample/public
+              path: /Users/takehikoogasawara/Documents/workspace/docker-rails-mysql/public
               type: Directory
           #- name: nginx-params-config
           #  configMap:
@@ -63,5 +63,5 @@
           - name: src
             hostPath:
               # 作業者にあわせてパスを変更
-              path: "/Users/takehikoogasawara/Documents/workspace/docker-rails-mysql/app/sample"
+              path: "/Users/takehikoogasawara/Documents/workspace/docker-rails-mysql/app"
               type: DirectoryOrCreate
