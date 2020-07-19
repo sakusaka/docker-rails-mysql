@@ -17,6 +17,7 @@
         containers:
           - name: rails-container
             image: rails-app:latest
+            imagePullPolicy: Never
             volumeMounts:
               - mountPath: /app/tmp/sockets
                 name: web-sock
@@ -29,6 +30,7 @@
                 value: Asia/Tokyo
           - name: nginx-container
             image: nginx:latest
+            imagePullPolicy: Never
             ports:
               - name: http-server
                 containerPort: 80
