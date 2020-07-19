@@ -1,0 +1,68 @@
+---
+  # コンテナ
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: mybotapp
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: mybotapp
+    template:
+      metadata:
+        labels:
+          app: mybotapp
+      spec:
+        containers:
+          - name: rails-container
+            image: rails-app:latest
+            volumeMounts:
+              - mountPath: /app/tmp/sockets
+                name: web-sock
+              - mountPath: /app
+                name: src
+            command: ["/bin/sh","-c"]
+            args: ["bundle exec pumactl start"]
+            env:
+              - name: TZ
+                value: Asia/Tokyo
+          - name: nginx-container
+            image: nginx:latest
+            ports:
+              - name: http-server
+                containerPort: 80
+              - name: https-server
+                containerPort: 443
+            volumeMounts:
+              - mountPath: /app/tmp/sockets
+                name: web-sock
+              - mountPath: /maintenance
+                name: nginx-maintenance-volume
+              #- mountPath: /etc/nginx/params
+              #  readOnly: true
+              #  name: nginx-params-config
+        imagePullSecrets:
+          - name: ap-northeast-1-ecr-registry
+        volumes:
+          - name: web-assets
+            emptyDir: {}
+          - name: web-sock
+            emptyDir: {}
+          - name: nginx-maintenance-volume
+            hostPath:
+              # 作業者にあわせてパスを変更
+              path: /Users/takehikoogasawara/Documents/workspace/docker-rails-mysql/app/sample/public
+              type: Directory
+          #- name: nginx-params-config
+          #  configMap:
+          #    name: nginx-params-config
+          #    items:
+          #      - key: ip-allow
+          #        path: ip-allow
+          - name: src
+            hostPath:
+              # 作業者にあわせてパスを変更
+              path: "/Users/takehikoogasawara/Documents/workspace/docker-rails-mysql/app/sample"
+              type: DirectoryOrCreate
+      
