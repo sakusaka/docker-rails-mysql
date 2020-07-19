@@ -65,4 +65,3 @@
               # 作業者にあわせてパスを変更
               path: "/Users/takehikoogasawara/Documents/workspace/docker-rails-mysql/app/sample"
               type: DirectoryOrCreate
-      
