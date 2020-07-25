@@ -29,7 +29,7 @@
               - name: TZ
                 value: Asia/Tokyo
           - name: nginx-container
-            image: nginx:latest
+            image: nginx:1.13.3
             imagePullPolicy: Never
             ports:
               - name: http-server
@@ -54,7 +54,7 @@
           - name: nginx-maintenance-volume
             hostPath:
               # 作業者にあわせてパスを変更
-              path: /Users/takehikoogasawara/Documents/workspace/docker-rails-mysql/public
+              path: /Users/takehikoogasawara/Documents/workspace/docker-rails-mysql/myapp/public
               type: Directory
           #- name: nginx-params-config
           #  configMap:
@@ -65,5 +65,5 @@
           - name: src
             hostPath:
               # 作業者にあわせてパスを変更
-              path: "/Users/takehikoogasawara/Documents/workspace/docker-rails-mysql/app"
+              path: "/Users/takehikoogasawara/Documents/workspace/docker-rails-mysql/myapp"
               type: DirectoryOrCreate
