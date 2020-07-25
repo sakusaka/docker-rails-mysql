@@ -14,6 +14,7 @@ RUN apt-get update \
     && apt-get -y install yarn \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+RUN yarn add --dev webpack-dev-server
 
 # install node 10.x
 RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
