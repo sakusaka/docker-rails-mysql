@@ -1,3 +1,9 @@
+#kind: Namespace
+#apiVersion: v1
+#metadata:
+#  name: mybotapp
+#  labels:
+#    name: mybotapp
 ---
   # コンテナ
   apiVersion: apps/v1
@@ -19,9 +25,9 @@
             image: mybotapp-rails:latest
             imagePullPolicy: Never
             volumeMounts:
-              - mountPath: /app/tmp/sockets
+              - mountPath: /mybotapp/tmp/sockets
                 name: web-sock
-              - mountPath: /app
+              - mountPath: /mybotapp
                 name: src
             command: ["/bin/sh","-c"]
             args: ["bundle exec pumactl start"]
@@ -37,7 +43,7 @@
               - name: https-server
                 containerPort: 443
             volumeMounts:
-              - mountPath: /app/tmp/sockets
+              - mountPath: /mybotapp/tmp/sockets
                 name: web-sock
               - mountPath: /maintenance
                 name: nginx-maintenance-volume
@@ -54,7 +60,7 @@
           - name: nginx-maintenance-volume
             hostPath:
               # 作業者にあわせてパスを変更
-              path: /Users/ogasawaratakehiko/Documents/private-github/docker-rails-mysql/myapp
+              path: /Users/ogasawaratakehiko/Documents/private-github/docker-rails-mysql/mybotapp
               type: Directory
           #- name: nginx-params-config
           #  configMap:
@@ -65,5 +71,5 @@
           - name: src
             hostPath:
               # 作業者にあわせてパスを変更
-              path: "/Users/ogasawaratakehiko/Documents/private-github/docker-rails-mysql/myapp"
+              path: "/Users/ogasawaratakehiko/Documents/private-github/docker-rails-mysql/mybotapp"
               type: DirectoryOrCreate
