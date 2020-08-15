@@ -60,7 +60,7 @@
           - name: nginx-maintenance-volume
             hostPath:
               # 作業者にあわせてパスを変更
-              path: /Users/ogasawaratakehiko/Documents/private-github/docker-rails-mysql/mybotapp
+              path: /Users/ogasawaratakehiko/Documents/private-github/docker-rails-mysql/mybotapp/public
               type: Directory
           #- name: nginx-params-config
           #  configMap:
