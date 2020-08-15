@@ -1,0 +1,17 @@
+FROM ruby:2.7.1
+
+# install tools
+RUN apt-get update -qq && apt-get install -y build-essential mariadb-client nodejs curl
+
+# install bundler
+RUN gem install bundler
+
+RUN mkdir /mybotapp
+WORKDIR /mybotapp
+ADD Gemfile /mybotapp/Gemfile
+ADD Gemfile.lock /mybotapp/Gemfile.lock
+RUN bundle install
+COPY . /mybotapp
+
+#EXPOSE 3000
+#CMD ["rails", "server", "-b", "0.0.0.0"]

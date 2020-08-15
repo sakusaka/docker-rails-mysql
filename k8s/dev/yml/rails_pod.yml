@@ -16,7 +16,7 @@
       spec:
         containers:
           - name: rails-container
-            image: rails-app:latest
+            image: mybotapp-rails:latest
             imagePullPolicy: Never
             volumeMounts:
               - mountPath: /app/tmp/sockets
@@ -29,7 +29,7 @@
               - name: TZ
                 value: Asia/Tokyo
           - name: nginx-container
-            image: nginx:1.13.3
+            image: mybotapp-nginx:latest
             imagePullPolicy: Never
             ports:
               - name: http-server
@@ -54,7 +54,7 @@
           - name: nginx-maintenance-volume
             hostPath:
               # 作業者にあわせてパスを変更
-              path: /Users/takehikoogasawara/Documents/workspace/docker-rails-mysql/myapp
+              path: /Users/ogasawaratakehiko/Documents/private-github/docker-rails-mysql/myapp
               type: Directory
           #- name: nginx-params-config
           #  configMap:
@@ -65,5 +65,5 @@
           - name: src
             hostPath:
               # 作業者にあわせてパスを変更
-              path: "/Users/takehikoogasawara/Documents/workspace/docker-rails-mysql/myapp"
+              path: "/Users/ogasawaratakehiko/Documents/private-github/docker-rails-mysql/myapp"
               type: DirectoryOrCreate

@@ -61,7 +61,7 @@ spec:
   storageClassName: slow
   hostPath:
     # 作業者の環境によって変更
-    path: "/Users/takehikoogasawara/Documents/workspace/docker-rails-mysql/mysql/data"
+    path: "/Users/ogasawaratakehiko/Documents/private-github/docker-rails-mysql/mysql/data"
     type: DirectoryOrCreate
 
 ---
