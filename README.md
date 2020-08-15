@@ -7,7 +7,7 @@ docker build -t mybotapp-nginx k8s/dev/nginx/
 
 # 初回のみ
 ## rails ファイルを生成する
-docker run -v $(pwd):/mybotapp --rm mybotapp-rails rails new . -G --force --database=mysql --skip-bundle
+docker run -v $(pwd)/mybotapp:/mybotapp --rm mybotapp-rails rails new . -G --force --database=mysql --skip-bundle
 
 ## コンテナコマンド
 ### pod開始
