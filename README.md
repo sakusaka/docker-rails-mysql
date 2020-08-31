@@ -4,6 +4,8 @@ docker build -t mybotapp-rails mybotapp/
 
 ## nginx
 docker build -t mybotapp-nginx k8s/dev/nginx/
+### tagを付ける場合
+docker build -t mybotapp-nginx:v0.2 k8s/dev/nginx/
 
 ## 初回のみ
 ### rails ファイルを生成する

@@ -35,7 +35,7 @@
               - name: TZ
                 value: Asia/Tokyo
           - name: nginx-container
-            image: mybotapp-nginx:latest
+            image: mybotapp-nginx:v0.6
             imagePullPolicy: Never
             ports:
               - name: http-server
