@@ -35,11 +35,11 @@
               - name: TZ
                 value: Asia/Tokyo
           - name: nginx-container
-            image: mybotapp-nginx:v0.6
+            image: mybotapp-nginx:v0.8
             imagePullPolicy: Never
             ports:
               - name: http-server
-                containerPort: 80
+                containerPort: 8080
               - name: https-server
                 containerPort: 443
             volumeMounts:
@@ -73,3 +73,32 @@
               # 作業者にあわせてパスを変更
               path: "/Users/ogasawaratakehiko/Documents/private-github/docker-rails-mysql/mybotapp"
               type: DirectoryOrCreate
+---
+# ロードバランサー
+apiVersion: v1
+kind: Service
+metadata:
+  name: mybotapp-service
+spec:
+  type: NodePort
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: mybotapp
+
+---
+# HTTPS
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: mybotapp-ingress
+  # annotations:
+    # kubernetes.io/ingress.global-static-ip-name: fuga-ipaddress # optional
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/ingress.allow-http: "false"
+spec:
+  backend:
+    serviceName: mybotapp-service
+    servicePort: 8080
