@@ -1,25 +1,25 @@
 version: '3'
-
 services:
-  web:
-    build: .
-    ports:
-      - "3000:3000"
-    command: bundle exec rails s -p 3000 -b '0.0.0.0'
-    volumes:
-      - .:/myapp
-      - bundle:/usr/local/bundle
-    depends_on:
-      - db
   db:
-    image: mysql:5.7
+    image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: password
-#MYSQL_ALLOW_EMPTY_PASSWORD: "yes" パスワードなしにしたい場合はこれ
     ports:
       - '3306:3306'
+    command: --default-authentication-plugin=mysql_native_password
     volumes:
-      - mysql_data:/var/lib/mysql
+      - mysql-data:/var/lib/mysql
+  web:
+    build: .
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    volumes:
+      - .:/myapp
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    stdin_open: true
+    tty: true
 volumes:
-  bundle:
-  mysql_data:
+  mysql-data:
+    driver: local
