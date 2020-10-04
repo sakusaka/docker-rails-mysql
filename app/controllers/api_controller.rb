@@ -1,5 +1,5 @@
 class ApiController < ApplicationController
   def index
-    p "api"
+    cookies[:hoge] = { :value => 't', :expires => 1.days.from_now, :httponly => true }
   end
 end
